@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a56db">
+  <title>사난기 — 산업안전기사 필기 대비</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========== 홈 화면 ========== -->
+  <section id="screen-home" class="screen active">
+    <div class="home-wrap">
+      <header class="home-header">
+        <h1 class="logo">사난기</h1>
+        <p class="tagline">산업안전기사 · 산업안전산업기사<br>필기 시험 대비</p>
+      </header>
+
+      <div class="home-section">
+        <h2 class="section-label">자격증 선택</h2>
+        <div class="cert-toggle" id="cert-toggle">
+          <button class="cert-btn active" data-cert="gisa">산업안전기사</button>
+          <button class="cert-btn" data-cert="sanup">산업안전산업기사</button>
+        </div>
+        <p class="cert-info" id="cert-info"></p>
+      </div>
+
+      <div class="home-section">
+        <h2 class="section-label">학습 모드</h2>
+        <button class="mode-card" id="btn-practice">
+          <span class="mode-icon">✏️</span>
+          <span class="mode-text">
+            <strong>연습</strong>
+            <small>한 문제씩 풀고 바로 정답 확인</small>
+          </span>
+        </button>
+        <button class="mode-card" id="btn-exam">
+          <span class="mode-icon">⏱️</span>
+          <span class="mode-text">
+            <strong>실전대비</strong>
+            <small id="exam-mode-desc">실제 시험처럼 타이머로 진행</small>
+          </span>
+        </button>
+      </div>
+
+      <p class="data-notice" id="data-notice"></p>
+    </div>
+  </section>
+
+  <!-- ========== 연습 화면 ========== -->
+  <section id="screen-practice" class="screen">
+    <header class="top-bar">
+      <button class="icon-btn" id="practice-back" aria-label="홈으로">←</button>
+      <span class="top-title">연습</span>
+      <span class="top-spacer"></span>
+    </header>
+
+    <nav class="subject-tabs" id="practice-subject-tabs"></nav>
+
+    <main class="quiz-body">
+      <div class="question-card">
+        <p class="question-meta" id="practice-q-meta"></p>
+        <p class="question-text" id="practice-q-text"></p>
+        <div class="choices" id="practice-choices"></div>
+        <div class="explanation hidden" id="practice-explanation"></div>
+      </div>
+    </main>
+
+    <footer class="bottom-bar">
+      <button class="primary-btn" id="practice-check" disabled>확인</button>
+      <button class="primary-btn hidden" id="practice-next">다음</button>
+    </footer>
+  </section>
+
+  <!-- ========== 실전대비 화면 ========== -->
+  <section id="screen-exam" class="screen">
+    <header class="top-bar exam-top">
+      <div class="exam-timer" id="exam-timer">03:00:00</div>
+      <div class="exam-remaining" id="exam-remaining"></div>
+      <button class="end-exam-btn" id="btn-end-exam">시험 종료</button>
+    </header>
+
+    <nav class="subject-tabs" id="exam-subject-tabs"></nav>
+
+    <nav class="q-nav" id="exam-q-nav"></nav>
+
+    <main class="quiz-body">
+      <div class="question-card">
+        <p class="question-meta" id="exam-q-meta"></p>
+        <p class="question-text" id="exam-q-text"></p>
+        <div class="choices" id="exam-choices"></div>
+      </div>
+    </main>
+
+    <footer class="bottom-bar dual">
+      <button class="ghost-btn" id="exam-prev">이전</button>
+      <button class="primary-btn" id="exam-next">다음</button>
+    </footer>
+  </section>
+
+  <!-- ========== 채점 중 화면 ========== -->
+  <section id="screen-grading" class="screen">
+    <div class="grading-wrap">
+      <div class="spinner"></div>
+      <p class="grading-text">채점하는 중...</p>
+    </div>
+  </section>
+
+  <!-- ========== 성적표 화면 ========== -->
+  <section id="screen-result" class="screen">
+    <header class="top-bar">
+      <span class="top-spacer"></span>
+      <span class="top-title">성적표</span>
+      <span class="top-spacer"></span>
+    </header>
+
+    <main class="result-body">
+      <div class="result-total-card" id="result-total-card">
+        <p class="result-label">총점 (평균)</p>
+        <p class="result-total-score" id="result-total-score">0점</p>
+        <p class="result-passfail" id="result-passfail"></p>
+      </div>
+      <div class="result-subjects" id="result-subjects"></div>
+      <p class="result-criteria">합격 기준 : 과목당 40점 이상, 전 과목 평균 60점 이상</p>
+    </main>
+
+    <footer class="bottom-bar">
+      <button class="primary-btn" id="result-home">홈으로</button>
+    </footer>
+  </section>
+
+  <!-- ========== 팝업 (모달) ========== -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal">
+      <p class="modal-title" id="modal-title">모든 문제를 다 풀었습니다.</p>
+      <p class="modal-desc" id="modal-desc">시험을 종료하시겠습니까?</p>
+      <div class="modal-actions">
+        <button class="ghost-btn" id="modal-cancel">검토하기</button>
+        <button class="primary-btn" id="modal-confirm">종료하기</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
