@@ -22,6 +22,7 @@ function shuffleChoices(question) {
     choices: order.map((i) => question.choices[i]),
     answer: order.indexOf(question.answer),
     explanation: question.explanation || null,
+    src: question.src || null,
   };
 }
 
@@ -83,9 +84,12 @@ function initHome() {
   $("#btn-practice").addEventListener("click", startPractice);
   $("#btn-exam").addEventListener("click", startExam);
 
-  if (typeof SAMPLE_MODE !== "undefined" && SAMPLE_MODE) {
+  const sampleCerts = Object.values(QUESTION_BANK)
+    .filter((c) => c.hasSample)
+    .map((c) => c.name);
+  if (sampleCerts.length > 0) {
     $("#data-notice").textContent =
-      "⚠️ 현재 문제은행 자료가 없어 샘플 문제로 동작합니다. 실제 자료 입력 후 정식 이용이 가능합니다.";
+      `⚠️ ${sampleCerts.join(", ")}는 아직 문제은행 자료가 없어 샘플 문제로 동작합니다.`;
   } else {
     $("#data-notice").classList.add("hidden");
   }
@@ -178,14 +182,19 @@ function loadPracticeQuestion() {
   });
 }
 
-/* 보기 목록 렌더링 (연습/실전 공용) */
+/* 보기 목록 렌더링 (연습/실전 공용) — 문제 텍스트에 특수문자가 있어도 안전하게 textContent 사용 */
 function renderChoices(container, choices, { onSelect, selectedIdx = null }) {
   container.innerHTML = "";
   const btns = [];
   choices.forEach((text, i) => {
     const btn = document.createElement("button");
     btn.className = "choice-btn" + (i === selectedIdx ? " selected" : "");
-    btn.innerHTML = `<span class="choice-num">${i + 1}</span><span>${text}</span>`;
+    const num = document.createElement("span");
+    num.className = "choice-num";
+    num.textContent = i + 1;
+    const label = document.createElement("span");
+    label.textContent = text;
+    btn.append(num, label);
     btn.addEventListener("click", () => onSelect(i, btns));
     container.appendChild(btn);
     btns.push(btn);
@@ -210,9 +219,20 @@ function checkPracticeAnswer() {
 
   const exp = $("#practice-explanation");
   exp.className = "explanation " + (isCorrect ? "is-correct" : "is-wrong");
-  exp.innerHTML =
-    `<span class="verdict">${isCorrect ? "⭕ 정답입니다!" : "❌ 오답입니다."}</span>` +
-    (explanation ? explanation : `정답은 ${answer + 1}번입니다.`);
+  exp.innerHTML = "";
+  const verdict = document.createElement("span");
+  verdict.className = "verdict";
+  verdict.textContent = isCorrect ? "⭕ 정답입니다!" : "❌ 오답입니다.";
+  const body = document.createElement("span");
+  body.className = "exp-body";
+  body.textContent = explanation || `정답은 ${answer + 1}번입니다.`;
+  exp.append(verdict, body);
+  if (practice.question.src) {
+    const src = document.createElement("span");
+    src.className = "exp-src";
+    src.textContent = `출처 · ${practice.question.src}`;
+    exp.appendChild(src);
+  }
   exp.classList.remove("hidden");
 
   $("#practice-check").classList.add("hidden");

@@ -392,6 +392,20 @@ button {
   margin-bottom: 6px;
 }
 
+.explanation .exp-body {
+  display: block;
+  white-space: pre-line;   /* 해설의 줄바꿈 유지 */
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.explanation .exp-src {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.65;
+}
+
 /* ---------- 하단바 ---------- */
 .bottom-bar {
   position: sticky;
